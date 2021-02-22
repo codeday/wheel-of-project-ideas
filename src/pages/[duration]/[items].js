@@ -53,9 +53,16 @@ export default function IndexPage({ duration, items }) {
       <Box textAlign="center" mt={4}>
         {wheel}
       </Box>
-      <Box textAlign="center" fontSize="5xl" fontWeight="bold" textShadow="1px 1px 5px black">
-        {selected}
-      </Box>
+      {hasStarted && (
+        <Box
+          textAlign="center"
+          fontSize="5xl"
+          fontWeight="bold"
+          textShadow="1px 1px 5px black"
+        >
+          {selected}
+        </Box>
+      )}
       <ControlledAudioPlayer src="/spin.mp3" playing={hasStarted} />
       <ControlledAudioPlayer src="/clap.wav" playing={Boolean(winner)} />
     </Box>
