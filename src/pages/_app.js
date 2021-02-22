@@ -6,7 +6,7 @@ export default function App({ Component, pageProps }) {
   return (
     <Theme brandColor="red">
       <style type="text/css">{`
-      html { font-size: 3vh; background-color: #ffdd00; color: #fff; }
+      html { font-size: 3vh; background-color: #fff; color: #fff; }
     `}</style>
       <Component {...pageProps} />
     </Theme>
