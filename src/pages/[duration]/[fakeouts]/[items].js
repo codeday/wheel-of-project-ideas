@@ -8,8 +8,7 @@ import BetterWheel from '../../../components/BetterWheel';
 import ControlledAudioPlayer from '../../../components/ControlledAudioPlayer';
 
 const INITIAL_SPIN_UP = 50;
-const FINAL_SPIN = 1000;
-const FINAL_DOWN = 1000;
+const FINAL_DOWN = 2000;
 const COLORS = [ 'red', 'orange', 'green', 'blue', 'purple' ];
 const SHADE = 500;
 
@@ -21,14 +20,16 @@ export default function IndexPage({ duration, fakeouts, items }) {
   const { width, height } = useWindowSize();
   const { colors } = useTheme();
 
-  const perCycle = Math.max(3000, ((duration / fakeouts) * 1000) - (INITIAL_SPIN_UP + FINAL_SPIN + FINAL_DOWN));
-  const c_d_c_u = [perCycle * 0.35, perCycle * 0.2, perCycle * 0.05, perCycle * 0.4];
+  const fixedDuration = INITIAL_SPIN_UP + FINAL_DOWN;
+  const initialSpin = (duration - fixedDuration) * 0.4;
+  const perCycle = Math.max(3000, ((duration / fakeouts) * 1000) - (fixedDuration + initialSpin));
+  const d_c_u_c = [perCycle * 0.2, perCycle * 0.05, perCycle * 0.4, perCycle * 0.35];
 
   const mappedColors = COLORS.map((c) => colors[c][SHADE]);
   const spinPattern = [
     INITIAL_SPIN_UP,
-    ...Array(Number.parseInt(fakeouts)).fill(c_d_c_u).reduce((a, b) => [...a, ...b], []),
-    FINAL_SPIN,
+    initialSpin,
+    ...Array(Number.parseInt(fakeouts)).fill(d_c_u_c).reduce((a, b) => [...a, ...b], []),
     FINAL_DOWN,
   ];
   const wheelSize = height - 200;
