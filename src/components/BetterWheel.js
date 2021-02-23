@@ -62,8 +62,13 @@ export default class BetterWheel extends Component {
       this.ctx = this.canvas.current.getContext('2d');
       this.canvas.current.setAttribute('width', size)
       this.canvas.current.setAttribute('height', size)
-      this.frame();
+      this.frame(false);
+      if (typeof window !== 'undefined') this.inactiveDrawInterval = setInterval(this.frame, 1000);
     }
+  }
+
+  componentWillUnmount() {
+    if (this.inactiveDrawInterval) clearInterval(this.inactiveDrawInterval);
   }
 
   spin() {
@@ -71,10 +76,10 @@ export default class BetterWheel extends Component {
     this.lastFrameTime = new Date().getTime();
     this.isSpinning = true;
     this.props.onSpinning && this.props.onSpinning();
-    this.frame();
+    this.frame(true);
   }
 
-  frame() {
+  frame(loop) {
     const { onComplete } = this.props;
     if (!this.isSpinning) return this.draw();
 
@@ -99,7 +104,7 @@ export default class BetterWheel extends Component {
 
     this.lastFrameTime = now;
     this.draw();
-    window?.requestAnimationFrame(this.frame);
+    if (loop) window?.requestAnimationFrame(this.frame);
   }
 
   draw() {
