@@ -14,7 +14,7 @@
     "@emotion/styled": "10.x",
     "babel-plugin-import-graphql": "^2.8.1",
     "emotion-theming": "10.x",
-    "next": "10.0.7",
+    "next": "^12",
     "openai": "^3.2.1",
     "prop-types": "^15.7.2",
     "react": "17.0.1",
