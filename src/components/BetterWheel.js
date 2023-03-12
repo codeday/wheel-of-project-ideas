@@ -4,10 +4,29 @@ import { Component, createRef } from 'react';
 const PI2 = Math.PI * 2;
 const RAD_PER_DEG = Math.PI / 180;
 
+function getLines(ctx, text, maxWidth) {
+  var words = text.split(" ");
+  var lines = [];
+  var currentLine = words[0];
+
+  for (var i = 1; i < words.length; i++) {
+      var word = words[i];
+      var width = ctx.measureText(currentLine + " " + word).width;
+      if (width < maxWidth) {
+          currentLine += " " + word;
+      } else {
+          lines.push(currentLine);
+          currentLine = word;
+      }
+  }
+  lines.push(currentLine);
+  return lines;
+}
+
 export default class BetterWheel extends Component {
   constructor(props) {
     super(props);
-    const { minDegPerSec, maxDegPerSec, times, size } = props;
+    const { minDegPerSec, maxDegPerSec, times, size, onClick } = props;
 
     const minRadPerMs = (minDegPerSec / 1000) * RAD_PER_DEG;
     const maxRadPerMs = (maxDegPerSec / 1000) * RAD_PER_DEG;
@@ -132,7 +151,13 @@ export default class BetterWheel extends Component {
     ctx.rotate((lastAngle + angle) / 2);
     ctx.fillStyle = contrastColor || 'white';
     ctx.font = `bold ${fontSize} ${font}`;
-    ctx.fillText(value.substr(0, 21), drawSize / 2 + 20, 0);
+    const fontHeight = ctx.measureText('foo').fontBoundingBoxDescent * 2
+    const lines = getLines(ctx, value, drawSize /2 + 20)
+    let curHeight = (lines.length * fontHeight) / 4 * -1
+    lines.forEach((line, idx) => {
+      ctx.fillText(line, drawSize / 2 + 20, curHeight);
+      curHeight += fontHeight
+    })
     ctx.restore();
   }
 
