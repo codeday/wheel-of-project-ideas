@@ -151,10 +151,12 @@ export default class BetterWheel extends Component {
     ctx.rotate((lastAngle + angle) / 2);
     ctx.fillStyle = contrastColor || 'white';
     ctx.font = `bold ${fontSize} ${font}`;
-    const fontHeight = ctx.measureText('foo').fontBoundingBoxDescent * 2
+    const fontHeight = (ctx.measureText('foo').fontBoundingBoxDescent || ctx.measureText('foo').actualBoundingBoxAscent) * 2
+    console.log(fontHeight)
     const lines = getLines(ctx, value, drawSize /2 + 20)
     let curHeight = (lines.length * fontHeight) / 4 * -1
     lines.forEach((line, idx) => {
+      // console.log(curHeight)
       ctx.fillText(line, drawSize / 2 + 20, curHeight);
       curHeight += fontHeight
     })
