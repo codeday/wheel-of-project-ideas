@@ -4,8 +4,12 @@ import { OpenAIApi, Configuration } from "openai";
 import getConfig from 'next/config';
 
 export default async function getIdeas(req, res) {
-    const result = await apiFetch(ThemeQuery, { endDate: (new Date(new Date().getTime())).toISOString() })
-    const theme = result.cms.events.items[0].theme
+    let theme = req.query.theme;
+    if (!theme) {
+      const result = await apiFetch(ThemeQuery, { endDate: (new Date(new Date().getTime())).toISOString() })
+      theme = result.cms.events.items[0].theme
+    }
+
     const config = getConfig();
     const configuration = new Configuration({
       apiKey: config.serverRuntimeConfig.OPENAI_KEY

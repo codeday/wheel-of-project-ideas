@@ -13,8 +13,8 @@ const FINAL_DOWN = 2000;
 const COLORS = [ 'red', 'orange', 'green', 'blue', 'purple' ];
 const SHADE = 500;
 
-export default function IndexPage() {
-  const { data, error, loading } = useSWR('/api/ideas', fetch)
+export default function IndexPage({ theme }) {
+  const { data, error, loading } = useSWR(`/api/ideas?theme=${encodeURIComponent(theme)}`, fetch);
   const [items, setItems] = useState(Array(5).fill('??????'))
   const duration = 30
   const fakeouts = 2
